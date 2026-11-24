@@ -1,0 +1,5 @@
+defaults:
+  - scope:
+      path: "research/outputs"
+    values:
+      research_output: true

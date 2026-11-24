@@ -1,3 +1,6 @@
+---
+layout: null
+---
 <!doctype html>
 <html lang="en">
 <head>
@@ -302,6 +305,30 @@
       cursor: pointer;
     }
 
+    .research-outputs {
+      margin-top: 2rem;
+      padding: clamp(1.05rem, 2.8vw, 1.85rem);
+      border: 1px solid var(--rule);
+      border-radius: .45rem;
+      background: var(--white);
+    }
+
+    .outputs-heading { margin-bottom: .75rem; }
+    .outputs-heading h3 { margin: 0; }
+    .outputs-empty { color: var(--muted); }
+    .output-list { margin: 0; padding: 0; list-style: none; }
+
+    .output-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding-block: .65rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .output-list a { overflow-wrap: anywhere; }
+
     .entry {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -416,6 +443,7 @@
     <section class="section" id="research" aria-labelledby="research-title">
       <div class="section-heading">
         <h2 id="research-title">Research &amp; Projects</h2>
+        <a href="#research-outputs">Browse research outputs</a>
       </div>
 
       <div class="projects">
@@ -449,6 +477,28 @@
           </div>
         </article>
       </div>
+
+      <section class="research-outputs" id="research-outputs" aria-labelledby="outputs-title">
+        <div class="section-heading outputs-heading">
+          <h3 id="outputs-title">Research Outputs</h3>
+          <a class="button secondary" href="https://github.com/HaohongYu/haohongyu.github.io/upload/main/research/outputs">Upload on GitHub</a>
+        </div>
+
+        {% assign outputs = site.static_files | where: 'research_output', true | sort_natural: 'name' %}
+        {% if outputs.size > 0 %}
+          <ul class="output-list" role="list">
+            {% for file in outputs %}
+              {% assign file_url = file.path | remove_first: '/' | url_encode | replace: '%2F', '/' | replace: '+', '%20' %}
+              <li>
+                <a href="{{ file_url | escape }}">{{ file.basename | replace: '_', ' ' | escape }}</a>
+                <span class="metadata">{{ file.extname | remove_first: '.' | upcase | escape }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="outputs-empty">Research files will appear here when they’re published.</p>
+        {% endif %}
+      </section>
     </section>
 
     <section class="section" id="teaching" aria-labelledby="teaching-title">
